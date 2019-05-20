@@ -1,304 +1,198 @@
-# node
+# Node
 
-- 安装[node](https://nodejs.org/zh-cn/)环境
-- `npm install gulp`
-- 写一份**gulpfile.js**配置gulp的参数
-- gulp命令执行js来完成代码处理（压缩，重命名）
-- sass->css js(es6)-压缩->js(es5) less->css
+<img src="./node的概念.png">
 
+Node就是把谷歌浏览器的控制台单独抽离了出来(抽离出来的其实是一个运行JS的引擎)，以前我们运行JS必须在浏览器的环境下，现在因为我们把这个(Chrome V8)引擎拿出安装在系统(手机系统，电脑系统，车载系统)上面，并把他命名为(Node)，还有删掉`window`和`document`这些对象，也就是说Node是没有`DOM`和`BOM`的执行环境，虽然把`DOM`和`BOM`删掉了，但是作为补充增加了内置的模块，这些内置都基本底层的方法，浏览器不具备的底层方法
 
-# install
+JS从此获得新生(JS以前很孤独，它只能在浏览器区域运作)，因为浏览器把这块土壤放到外部(系统)，JS运行在浏览器的外部，活动范围变大了，从前端语言进化为后端语言（掌握系统的增删查改的权限）
 
-如果没有安装的node环境去[node官网](https://nodejs.org/zh-cn/)安装维护版本
+所以node的JS代码里面不能出现这类型的代码
 
-查看版本号，在cmd中执行，
-
-```bash
-node -v # 10,14.2
-```
-
-# introduce
-
-Node.js®是一个基于`Chrome V8`引擎的JavaScript运行时
-
-### 前端（浏览器端）
-
-> 要运行JS，必须借助于HTML文件，没有HTML文件和浏览器环境，那JS是无法运行（要有HTML文件，也要有浏览器环境）
-> 浏览器=界面(html+css)+控制台(js)
-> JS是必须运行在浏览器上，所以只能控制浏览器
-
-
-### 后端（服务器端）
-
-> 要运行JS，（既不需要HTML文件，也不需要浏览器环境，只需要Node环境），node替代了HTML文件，也替代了浏览器
-> 服务器(node)=控制台
-> JS有了node环境，可以运行在非浏览器环境下，因为node是装在系统上，所以JS可以操作系统
-node(浏览器的控制台===chrome的V8引擎)<浏览器
-
-Chrome浏览器 = NodeJS(控制台,JS) + 界面(HTML,CSS)
-
-Nodejs就是想做一件事情，把浏览器的JS引擎拿出来，放到世界上任何设备上来跑JS
-
-# 运行
-
-如何使用node,以前我们是打好一份JS，需要配合HTML文件执行，现在只需要在电脑安装好node环境，用以下方式启动
-
-- 写一份JS代码
-- 在命令行定位到此代码的位置，运行命令`node JS文件的名字.js`或者`node xxx(省略后缀)`
-
-一般来说，运行nodejs`node JS文件的名字.js`，但是有些情况`gulp xxx`
 ```js
-npm install gulp -g //全局安装，会在全局环境下增加了一个gulp命令
-gulp
+document.getElementById("").xxx //DOM
+window.location.href = "" //BOM
 ```
 
+# 检查Node环境是否安装成功
+
+查看的是你当前Node的版本号
+
+```sh
+node -v
+```
+
+#  用Node运行JS
+
+<img src="./node执行.png">
+
+你可以在命令行或者终端里面直接运行JS，相对于以前在浏览器里面运行JS是很大的不一样
+```sh
+node [JS的文件名]
+node index.js
+node index
+```
 
 # 模块化
 
-一个前端项目 = 自定义模块+原生内置模块(window,document)+第三方模块(jquery)
+- require.js 模块化
+- `<script type="module" src="xxx.js">`
+- gulp模块
 
-一个后端项目 = 自定义模块+原生内置模块(fs,http,os,url)+第三方模块(jquery)
+优势
 
-node的内置模块和浏览器的内置模块是不一样
+模块其实就是把复杂的JS，HTML，CSS分成一小段
 
-`require.js`二阶段
+房子在构建过程中会有很多耗材（钉子，木头，铁，螺丝，斧头，锤子），这些小部件其实本质就是一个模块，这些模块互相结合，最终成为一个大厦
 
-- 自定义模块  (自己写的JS)
-- 内置模块  (location,document.cookie)DOM和BOM  (操作系统)
-- 第三方模块 (jquery)
+- 分工明确
+- 容易找锅，容易找出错误
+- 方便管理
+- 按需加载
 
-> 前端用得比较多的是1，2方案，后端用得比较多3，4
+二阶段最经典的模块化，把每份JS分开写，每份JS单独做对应的逻辑，`jquery`负责提供这个操作DOM和BOM的API，AJAX的请求，`jquery-swiper.js`提供轮播图效果(滑块容器)
 
-1. 顺序问题，分开每一个JS去使用
-```html
-<script src="./lib/jquery.js"></script>
-<script src="./lib/common.js"></script>
-<script src="./lib/core.js"></script>
-```
-它会全局污染，就比如jquery如果引入两次，那最后一次会覆盖前面的那一份，原因是因为jquery是把$挂载到全局的window上面
-
-`require`和`module.exports`代替了前端的`<script>`引入方式
-
-2. requirejs
-
-3. ES5
-- 导出 module.exports(define)
-- 导入 require
-
-4. ES6
-- 导出 export
-- 导入 import
-
-# 自定义模块化
-
-### 前端
-
-自己写的JS叫自定义模块
-
-- 写多条`<script>引入JS`在html分开引入
-- 利用`require.js`
 ```html
 <script src="jquery.js"></script>
-<script src="cookie.js"></script>
-<script src="module.js"></script>
+<script src="jquery-swiper.js"></script>
+<script src="index.js"></script>
 ```
 
-### node（后端）
+### require
 
-它没有html，所以需要借助于两个JS方法
+使用它来引入外部模块，我们可以新建index.js
 
-导出，借助于`module.exports`
 ```js
-function plus(a, b) {
-	return a + b
+console.log(1);
+// require引入，获取的意思
+require('./module1.js');
+// 引入了module2的模块，并且赋值给teacher变量
+var teacher = require('./module2');
+
+console.log(teacher.plus(teacher.age , 1));
+```
+
+### module.exports
+
+module模块的意思，export是导出的意思
+
+配合`module.exports`导出所需的模块，使用`require`引用，按需加载
+```js
+// module2.js
+var obj = {
+    name: "yao",
+    age: 18,
+    skill: ['ps', 'js', 'css'],
+    plus: function (num1, num2) {
+        return num1 + num2
+    }
 }
 
-function sub(a,b){
-	return a-b
-}
-
-module.exports = {
-	plus,
-	sub
-}
+// 导出模块
+// 把上面的obj导出外部使用
+module.exports = obj;
 ```
-
-导入,借助于`require`,建议用相对路径
 ```js
-var tool = require("./plus.js");
+console.log(2);
 ```
 
+此时模块1`module1.js`和模块2`module2.js`各司其职，分工明确，配合`index.js`引入这些模块，然后使用完成主逻辑
 
-# 内置模块
 
-[官网内置模块API](https://nodejs.org/dist/latest-v10.x/docs/api/)
+# 自定义模块
 
-不需要自己写，就是node环境自带，它自己写好给你的，就可以引入
+自己写的代码，都叫自定义模块，你自己写的代码里面，引入了其它的模块，但是只要这个模块是你自己写，那这个就是自定义模块
 
-Node拿来作为PHP的一种替代（多一种可选的方案）
-
-PHP能做的，Node也能做
-
-node引擎如果放在浏览器里面启动(DOM和BOM)
-
-node引擎如果放在系统上的(跟系统相关的模块，文件操作，网络操作，服务器的模块)
-
-sync  同步
-async 异步
-
-nodejs默认是异步(async)
-
-|模块|名字|
-|-|-|
-|读写文件|fs|
-|创建服务器|http|
-|查看系统|os|
-|压缩文件|zip|
-|...|...|
-
-其他模块参考 [node官网内置模块API文档](https://nodejs.org/dist/latest-v8.x/docs/api/)
 
 ```js
-assert - 断言
-async_hooks - 异步钩子
-Buffer - 缓冲器
-child_process - 子进程
-cluster - 集群
-console - 控制台
-crypto - 加密
-dgram - 数据报
-dns - 域名服务器
-domain - 域
-Error - 异常
-events - 事件触发器
-fs - 文件系统
-global - 全局变量
-http - HTTP
-http2 - HTTP/2
-https - HTTPS
-inspector - 调试器
-module - 模块
-net - 网络
-os - 操作系统
-path - 路径
-perf_hooks - 性能钩子
-process - 进程
-punycode - 域名代码
-querystring - 查询字符串
-readline - 逐行读取
-repl - 交互式解释器
-stream - 流
-string_decoder - 字符串解码器
-timer - 定时器
-tls - 安全传输层
-trace_events - 跟踪事件
-tty - 终端
-url - URL
-util - 实用工具
-v8 - V8引擎
-vm - 虚拟机
-worker_threads - 工作线程
-zlib - 压缩
+console.log(1);
+// require引入，获取的意思
+require('./module1.js');
+// 引入了module2的模块，并且赋值给teacher变量
+var teacher = require('./module2');
+
+console.log(teacher.plus(teacher.age , 1));
 ```
 
-### HTTP
-
-http超文本传输协议
-前端最多就是ajax(http协议的一种前端实现方案)  GET/POST
-
-
-|GET|POST|
-|-|-|
-|参数在url上|参数在请求体|
-|有可能有长度|没长度限制|
-|不安全|安全|
-
-
-|状态码||
-|-|-|
-|1xx|开始执行|
-|2xx|成功|
-|3xx|重定向|
-|4xx|客户端错误,浏览器端|
-|5xx|服务端|
-
-apache(wamp集成环境)+php
-
-```
-window
-apache
-mysql
-php
-```
-
-### 创建服务器
-
-```js
-var http = require('http');
-console.log(http);
-var server = http.createServer(Function(request,response){
-	response.end("hello world");
-})
-server.listen(12345);//(0,65535)
-console.log("启动服务器");
-```
-出现跨域，加一个头部来解决
-```php
-header("Access-Control-Allow-Origin:*")
-```
+上面的`index.js`用了两个自己写的模块分别是`module1.js`和`module2.js`，所以这三份JS都是自定义模块
 
 # 第三方模块
 
-我们可以从[npm](https://www.npmjs.com/)包管理中心去下载一些第三方包（别人写好传上去的），去在本地node平台实现自己的一些功能
+- [jQuery](https://jquery.com/download/)
+- [gulp](https://www.npmjs.com/package/gulp)
 
-安装第三方包模块
-
-gulp就是一个常用的第三方模块
-
-npm就类似于一个模块应用商店，里面有大量的第三方模块
-
-### 安装
-
-```bash
-npm install xxx(gulp) -g
-npm i
+```sh
+npm install gulp
+npm install jquery
+npm install cheerio #在服务端替代jquery
 ```
 
-建议安装`cnpm`替代`npm`,或者`yarn`,在命令行上输入以下代码安装
-```
-npm install -g cnpm --registry=https://registry.npm.taobao.org
-```
+[npm](https://www.npmjs.com)就是第三方模块的市场，应用商店，Node的所有模块将可以在这里被找到
 
-除了全局安装之外，安装任何包都会在该目录下`node_modules`，你的包就会被安装在该文件夹下
-这个文件夹不要传到svn和git服务器上，以后你移植这个项目的时候不要把`node_modules`，只要
-用`package.json`描述文件去代替它，这份文件记录着你开发node的一些关键信息，比如你安装过什么模块作为依赖
-
-
-### 卸载
-
-```bash
-npm uninstall xxx  //卸载某个模块
-npm uninstall //全部卸载
+这是第三方模块在JS里面引入的手法，区别就是自定义模块需要相对路径或者绝对路径，建议相对路径，在移植的时候比较好维护，而这个第三方模块只需要用模块名，它会自动识别当前目录下的`node_modules`文件夹里面的内容，寻找出对应的模块，如果当前目录下没有`node_modules`，他会往父目录下寻找
+```js
+var $ = require('jquery'); // 引入第三方模块
+var $ = require('./node_modules/jquery/dist/jquery.js'); // 引入第三方模块
+var fs = require('fs'); //引入内置模块
+var teacher = require('./module2'); //引入自定义模块
 ```
 
-### 初始化
+# 内置模块
 
-生成一份`package.json`描述文件
-```bash
-npm init
+其实就是手机本来有自带摄像功能(内置模块)，但是如果我不满足手机自带的摄像，那我可以去下载第三方的app(B612，美图秀秀)，这些就是我们所说的第三方模块，但是这些第三方模块都要依赖于内置模块
+
+[nodejs的官方api文档](http://nodejs.cn/api/)
+
+内置模块它只需要引入模块名字即可
+```js
+var fs = require('fs');
+var http = require('http');
 ```
 
-## 使用第三方模块
+- fs文件系统
+fs模块是文件操作系统的方法，它里面对文件的读写都有对应的方法
+- http
+- buffer缓冲器
+
+## fs
+
+它分同步和异步
+
+`sync`的意思是同步，`async`是异步，而异步是不需要写的，所以node默认是支持异步的，JS是单线程的，如果需要完成多个任务的话，需要用异步解决
+```js
+var fs = require('fs');
+fs.readFile(); //异步
+fs.readFileSync(); //同步
+```
+我们可以用异步的方法读取系统的文件，err错误前置，data数据后置
+```js
+// node里面的回调函数，一般第一个参数都为err，因为node错误前置
+fs.readFile('./input.txt',null, function(err,data){
+
+})
+```
+
+## buffer
+
+解码，因为你无法知道你读取的文件是否是文本，音频还是视频，是一个最简单二进制数据
 
 ```js
-var request = require('request');
-var gulp = require('gulp');
+buf.toString(); //buffer二进制转字符串
 ```
 
-# 状态码
+## http
 
-- 1xx 准备，发送
-- 2xx 成功
-- 3xx 重定向(读缓存)
-- 4xx 客户端(浏览器这边)错误
-- 5xx 服务端(服务器那边)错误
+你可以用http模块实现通信，伪造请求，或者创建服务器
+```js
+var http = require('http');
+console.log(http);
+
+// req request请求
+// res response响应
+http.createServer(function(req,res){
+    res.end('hello world')
+})
+// 服务器监听的端口号
+.listen(12345)
+```
+以上代码可以实现一个简单的服务器
+
