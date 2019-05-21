@@ -4,6 +4,7 @@
 
 // FE
 const $ = require('jquery');
+const request = require('request');
 // BE
 const fs = require('fs');
 console.log(fs);
@@ -24,8 +25,3 @@ fs.readFile('../day2.md', (err, data) => {
     console.log(data);
     textarea2.val(data.toString());
 })
-
-
-
-
-

@@ -123,3 +123,30 @@ $ npm run start
 改写`renderer.js`可以使用DOM和BOM，也可以使用Node API，以前前端JS只能调用DOM和BOM，现在因为它用Node作为底层托盘，可以往下去调用Node的接口，来去控制系统底层
 
 Flash Android/IOS JAVA
+
+# 伪造请求request第三方模块
+
+Postman工具，发起请求，这个其实是你自己伪造给服务器，服务器收到伪造的请求，就会相应对应的结果给你
+
+http模块伪造请求
+```js
+var http = require('http');
+```
+
+[request第三方模块](https://www.npmjs.com/package/request)
+```sh
+cnpm install request
+```
+formData接受对象
+```js
+request.post({url:'http://service.com/upload', formData: formData}, function optionalCallback(err, httpResponse, body) {
+  if (err) {
+    return console.error('upload failed:', err);
+  }
+  console.log('Upload successful!  Server responded with:', body);
+});
+```
+
+# 作业
+
+- electron写一个轮播图

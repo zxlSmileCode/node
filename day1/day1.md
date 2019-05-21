@@ -219,3 +219,11 @@ http.createServer(function(req,res){
 ```
 以上代码可以实现一个简单的服务器
 
+## os
+
+获取操作系统的一些底层信息
+```js
+const os = require('os');
+console.log(os.cpus());
+```
+
