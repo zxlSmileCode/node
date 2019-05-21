@@ -1,160 +1,125 @@
-# 参考教程
+# electron
 
-[runoob菜鸟教程](https://www.runoob.com/nodejs/nodejs-tutorial.html)
+[Postman](https://www.getpostman.com/)
 
-# 异步
+代码爬虫，伪造请求
 
-### 前端（浏览器端）
+[官方文档](https://electronjs.org/)
 
-前端异步只有一下几种情况是异步
+> 什么是electron？使用 JavaScript, HTML 和 CSS 构建跨平台的桌面应用
+
+# package.json
+
+可以使用以下命令来初始化你的项目，让它拥有`package.json`来记录该项目所使用过的所有依赖，方便你去管理项目，或者移植项目
+
 ```
-ajax xmlhttprequest
-setInterval/setTimeout
-jsonp
-```
-
-### 后端（服务器端node）
-
-比前端多很多，很多方法都是异步的
-
-```js
-fs.readFile //异步
-fs.readFileSync //同步
+npm init
 ```
 
-异步一般配合回调函数,回调函数能让异步变得有意义
-
-同步比异步少了回调函数
-
-同步阻塞，相对稳定，不需要回调
-
-异步非阻塞，相对不稳定，配合回调才有意义
-
-```js
-//同步
-var data = fs.readFileSync('./test.txt');
-console.log(data.toString());
-
-//异步
-fs.readFile('./test.txt',function(err,data2){
-	console.log(data2.toString());
-});
+如果要一个个模块去安装，那么会很低效
 ```
+npm install xxx
+npm install jquery
+npm install gulp
+```
+可以在该项目的父目录下，放一份叫做`package.json`文件，去记录我该项目需要用到的模块，会有一个字段`devDependencies`，我开发的项目需要用到的依赖模块，
 
+- name项目名字
+- version版本号
+- description项目描述
+- main项目的主逻辑文件，require('xxx'),找main的地址里面对应的文件去引入
+- scripts你的启动命令
 
-# 回调嵌套
+在该项目的范围里面使用命令行
+```sh
+npm run xxx # 命令的
+```
+- repository项目开源托管项目
+- keywords该项目被检索的关键字(npm，搜索引擎)
 
-如果出现多个回调嵌套的时候，建议是用`promise`来去解决这个回调地狱
-```js
-function buyPizza() {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			console.log("买披萨");
-			resolve()
-		}, 1000);
-	})
+```json
+{
+  "name": "electron-quick-start",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^5.0.0"
+  }
 }
-function buyDrink() {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			console.log("买饮料");
-			resolve()
-		}, 1000);
-	})
+```
+- bootstrap
+- jquery
+```sh
+npm install --save-dev
+```
+`devDependencies`是开发依赖，后端依赖，也就是Node依赖
+```
+npm install --save
+```
+`dependencies`是前端依赖，也就是Chromium，页面需要依赖
+```json
+"devDependencies": {
+    "electron": "^5.0.0"
+  },
+"dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1"
 }
-function eatMeal() {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			console.log("吃东西");
-			//resolve()
-		}, 1000);
-	})
-}
-buyPizza().then(buyDrink).then(eatMeal);
-```
-# await和async
-
-await和async也是解决异步嵌套的一个方法，它建立在promise的基础上
-[promise&&await&&deferred和event loop](https://github.com/Wscats/node-tutorial/issues/12)
-
-# event和观察者模式
-
-```js
-myEmitter.on('buypiza', () => {
-    setTimeout(() => {
-        console.log('买披萨');
-        myEmitter.emit('eatpiza');
-    }, 1000)
-});
-
-myEmitter.on('eatpiza', () => {
-    setTimeout(() => {
-        console.log('吃披萨');
-        myEmitter.emit('meeting');
-    }, 2000)
-});
-
-myEmitter.on('meeting', () => {
-    console.log('约会');
-});
-myEmitter.emit('buypiza');
 ```
 
-# node-wifi
+# 快速开始
 
-```js
-var wifi = require('node-wifi');
+```sh
+# 克隆示例项目的仓库
+$ git clone https://github.com/electron/electron-quick-start
+
+# 进入这个仓库
+$ cd electron-quick-start
+
+# 安装依赖并运行
+$ npm install && npm start
+
+# 建议使用cnpm安装
+$ cnpm install
+$ npm start
+$ npm run start
 ```
 
-# request
+- index.html 桌面的首页
+- LICENSE.md 版权文档
+- main.js    主桌面逻辑(后端)
+- package.json 该node项目的描述文件
+- README.md  说明文件
+- renderer.js 主桌面逻辑(前端)
 
-以前我们是自己写前端页面触发ajax请求来获取后端信息，但是有了request模块，我们可以伪造这个ajax请求
+# Electron概念
 
-任何前端请求都有
+<img src="./electron.png" />
 
-请求头（浏览器信息），请求体（POST请求，请求参数会放在这个地方）   用户不可见的
+|前端|后端|
+|-|-|
+|Chromium|Node|
+|HTML,CSS,JS|JS（去除DOM和BOM）|
 
-响应头（服务器信息），响应体（页面的内容，用户可见）
-
-- [request模块文档](https://www.npmjs.com/package/request)
-
-### 爬虫
-
-爬取网站的内容，然后可以保存到本地，或者分析页面获取有价值的信息
-```js
-var request = require('request');
-var fs = require('fs');
-request('http://www.umei.cc/', function(error, response, body) {
-	//console.log('error:', error); // Print the error if one occurred
-	//console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	console.log('body:', body); // Print the HTML for the Google homepage.
-//	fs.writeFile('test.html', body, function(err) {
-//		console.log("成功保存")
-//	})
-});
-console.log("开始请求");
-```
+由这两层架构起来
 
 
-# cheerio
+# renderer.js
 
-- [cheerio使用文档](https://www.npmjs.com/package/cheerio)
+改写`renderer.js`可以使用DOM和BOM，也可以使用Node API，以前前端JS只能调用DOM和BOM，现在因为它用Node作为底层托盘，可以往下去调用Node的接口，来去控制系统底层
 
-实现网页内容分析，用法类似于jQuery，node版本jQuery,可以用它爬取文字，图片，音频
-
-```js
-var request = require('request');
-var cheerio = require('cheerio');
-request('http://www.umei.cc/', function(error, response, body) {
-	//console.log('body:', body); // Print the HTML for the Google homepage.
-	const $ = cheerio.load(body);
-	$("img").each((i,e)=>{
-		console.log($(e).attr("src"))
-	})
-});
-
-console.log("开始请求");
-```
-
-并非所有网站都是能爬，有些网站是防爬虫，还有一些网页是前端JS动态生成
-
+Flash Android/IOS JAVA

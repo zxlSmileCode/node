@@ -2,7 +2,7 @@
 
 <img src="./node的概念.png">
 
-Node就是把谷歌浏览器的控制台单独抽离了出来(抽离出来的其实是一个运行JS的引擎)，以前我们运行JS必须在浏览器的环境下，现在因为我们把这个(Chrome V8)引擎拿出安装在系统(手机系统，电脑系统，车载系统)上面，并把他命名为(Node)，还有删掉`window`和`document`这些对象，也就是说Node是没有`DOM`和`BOM`的执行环境，虽然把`DOM`和`BOM`删掉了，但是作为补充增加了内置的模块，这些内置都基本底层的方法，浏览器不具备的底层方法
+[Node](http://nodejs.cn/download/)就是把谷歌浏览器的控制台单独抽离了出来(抽离出来的其实是一个运行JS的引擎)，以前我们运行JS必须在浏览器的环境下，现在因为我们把这个(Chrome V8)引擎拿出安装在系统(手机系统，电脑系统，车载系统)上面，并把他命名为(Node)，还有删掉`window`和`document`这些对象，也就是说Node是没有`DOM`和`BOM`的执行环境，虽然把`DOM`和`BOM`删掉了，但是作为补充增加了内置的模块，这些内置都基本底层的方法，浏览器不具备的底层方法
 
 JS从此获得新生(JS以前很孤独，它只能在浏览器区域运作)，因为浏览器把这块土壤放到外部(系统)，JS运行在浏览器的外部，活动范围变大了，从前端语言进化为后端语言（掌握系统的增删查改的权限）
 
@@ -38,16 +38,29 @@ node index
 - `<script type="module" src="xxx.js">`
 - gulp模块
 
+模块规范
+
+根据`CommonJS`规范，一个单独的文件就是一个模块。加载模块使用`require`方法和`module.exports`或者`exports`,`module.exports,exports`的区别（深度克隆，指针，深拷贝和浅拷贝）。
+- CommonJS NodeJS是这种规范的实现`(require,module.exports,exports)`
+
+AMD规范通过`define`方法去定义模块，通过`require`方法去加载模块。`RequireJS`实现了这种规范。
+- AMD
+
+CMD是`SeaJS`在推广过程中对模块定义的规范化产出。国人编写的规范
+- CMD
+
+- ES6模块化，`import`和`export`
+
 优势
 
-模块其实就是把复杂的JS，HTML，CSS分成一小段
+模块其实就是把复杂的`JS，HTML，CSS`分成一小段
 
 房子在构建过程中会有很多耗材（钉子，木头，铁，螺丝，斧头，锤子），这些小部件其实本质就是一个模块，这些模块互相结合，最终成为一个大厦
 
 - 分工明确
 - 容易找锅，容易找出错误
-- 方便管理
-- 按需加载
+- 方便后期管理
+- 前期按需加载
 
 二阶段最经典的模块化，把每份JS分开写，每份JS单独做对应的逻辑，`jquery`负责提供这个操作DOM和BOM的API，AJAX的请求，`jquery-swiper.js`提供轮播图效果(滑块容器)
 
@@ -60,6 +73,8 @@ node index
 ### require
 
 使用它来引入外部模块，我们可以新建index.js
+
+
 
 ```js
 console.log(1);
@@ -124,6 +139,14 @@ console.log(teacher.plus(teacher.age , 1));
 npm install gulp
 npm install jquery
 npm install cheerio #在服务端替代jquery
+```
+使用npm会有可能失败，所以建议使用
+```sh
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+如果安装成功，如果有显示结果证明安装成功
+```sh
+cnpm -v
 ```
 
 [npm](https://www.npmjs.com)就是第三方模块的市场，应用商店，Node的所有模块将可以在这里被找到
